@@ -11,11 +11,10 @@ namespace httpClientNunit
             }
 
             var request = response.RequestMessage;
-            Console.Write($"{request?.Method} ");
-            Console.Write($"{request?.RequestUri} ");
+            Console.WriteLine($"{request?.Method} ");
+            Console.WriteLine($"{request?.RequestUri} ");
             Console.WriteLine($"HTTP/{request?.Version}");
         }
-
     }
 
     public class Tests
@@ -32,30 +31,24 @@ namespace httpClientNunit
         }
 
         [Test]
-        public void Test1()
+        public static async Task Test1()
         {
-            Task hmm= GetAsync(httpClient);
+            await GetRequest("random");
 
            
+
         }
 
-        static async Task GetAsync(HttpClient httpClient)
+       public static async Task GetRequest(String endpoint)
         {
-            using HttpResponseMessage response = await httpClient.GetAsync("entries");
+            using HttpResponseMessage response = await httpClient.GetAsync(endpoint);
 
             response.EnsureSuccessStatusCode().WriteRequestToConsole();
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
 
-            // Expected output:
-            //   GET https://jsonplaceholder.typicode.com/todos/3 HTTP/1.1
-            //   {
-            //     "userId": 1,
-            //     "id": 3,
-            //     "title": "fugiat veniam minus",
-            //     "completed": false
-            //   }
+          
         }
     }
 }
